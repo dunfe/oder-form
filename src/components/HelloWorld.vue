@@ -1,58 +1,145 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div class="hello">
+        <h1>{{ msg }}</h1>
+        <h1 class="pt-3">Service</h1>
+        <form id="app" v-cloak>
+            <ul>
+                <li v-for="service in services" v-bind:key="service.id" v-on:click="toggleActive(service)"
+                    v-bind:class="{ 'active' : service.active}" class="w-100">
+                    {{ service.name}} <span>{{ service.price | currency}}</span>
+                </li>
+            </ul>
+            <div class="total">
+                Total : <span>{{ total() | currency }}</span>
+            </div>
+        </form>
+    </div>
 </template>
-
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+    export default {
+        name: 'HelloWorld',
+        props: {
+            msg: String
+        },
+        data: function () {
+            return {
+                service: '',
+                services: [
+                    {
+                        id: 1,
+                        name: 'Sushi',
+                        price: 300,
+                        active: false
+                    },
+                    {
+                        id: 2,
+                        name: 'Steak',
+                        price: 500,
+                        active: false
+                    },
+                    {
+                        id: 3,
+                        name: 'Coca',
+                        price: 10,
+                        active: false
+                    }
+                ]
+            }
+        },
+        methods: {
+            toggleActive: function (item) {
+                item.active = !item.active
+            },
+            total: function () {
+                let total = 0;
+                this.services.forEach(function (item) {
+                    if (item.active) {
+                        total += item.price
+                    }
+                });
+                return total
+            }
+        }
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+    [v-cloak] {
+        display: none;
+    }
+
+    h3 {
+        margin: 40px 0 0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    a {
+        color: #42b983;
+    }
+
+    form {
+        background-color: #61a1bc;
+        border-radius: 2px;
+        box-shadow: 0 1px 1px #ccc;
+        width: 400px;
+        padding: 35px 60px;
+        margin: 50px auto;
+    }
+
+    form h1 {
+        color: #fff;
+        font-size: 64px;
+        font-family: 'Cookie', cursive;
+        font-weight: normal;
+        line-height: 1;
+        text-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    form ul {
+        list-style: none;
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: left;
+        margin: 20px 0 15px;
+    }
+
+    form ul li {
+        padding: 20px 30px;
+        background-color: #e35885;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    form ul li span {
+        float: right;
+    }
+
+    form ul li.active {
+        background-color: #8ec16d;
+    }
+
+    div.total {
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 15px 30px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: left;
+        color: #fff;
+    }
+
+    div.total span {
+        float: right;
+    }
 </style>
